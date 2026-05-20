@@ -22,6 +22,30 @@ namespace PharmacyOrders
 
         }
 
-     
+        private void btnBorrar_Click(object sender, EventArgs e)
+        {
+            txtMedicamento.Text = "";
+            cmbTipo.SelectedIndex = -1;
+            txtCantidad.Text = "";
+            rbCofarma.Checked = false;
+            rbCemefar.Checked = false;
+            rbEmpsephar.Checked = false;
+            chkPrincipal.Checked = false;
+            chkSecundaria.Checked = false;
+        }
+
+        private void btnConfirmar_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtMedicamento.Text))
+            {
+                MessageBox.Show("Medication name cannot be empty");
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(txtCantidad.Text) || int.TryParse(txtCantidad.Text, out  int))
+            {
+                
+            }
+
+        }
     }
 }
