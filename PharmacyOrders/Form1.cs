@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace PharmacyOrders
 {
@@ -38,32 +39,37 @@ namespace PharmacyOrders
         {
             if (string.IsNullOrWhiteSpace(txtMedicamento.Text))
             {
-                MessageBox.Show("Medication name cannot be empty.");
+                MessageBox.Show("El nombre del medicamento no puede estar vacío.");
+                return;
+            }
+            if (!Regex.IsMatch(txtMedicamento.Text.Trim(), @"^[a-zA-Z0-9\s]+$"))
+            {
+                MessageBox.Show("El nombre del medicamento sólo puede contener letras y números.");
                 return;
             }
             if (string.IsNullOrWhiteSpace(txtCantidad.Text))
             {
-                MessageBox.Show("Medication quantity can't be empty.");
+                MessageBox.Show("La cantidad no puede estar vacía.");
                 return;
             }
             if (!int.TryParse(txtCantidad.Text, out int numero) || numero <= 0)
             {
-                MessageBox.Show("Medication must be a number grater than 0");
+                MessageBox.Show("La cantidad debe ser un número entero positivo.");
                 return;
             }
             if (cmbTipo.SelectedIndex == -1)
             {
-                MessageBox.Show("Pleaase select a medication type");
+                MessageBox.Show("Por favor, selecciona un tipo de medicamento.");
                 return;
             }
             if (!rbCofarma.Checked && !rbEmpsephar.Checked && !rbCemefar.Checked)
             {
-                MessageBox.Show("Please select a distributor");
+                MessageBox.Show("Por favor, selecciona un distribuidor.");
                 return;
             }
             if (!chkPrincipal.Checked && !chkSecundaria.Checked)
             {
-                MessageBox.Show("Please select at least one branch");
+                MessageBox.Show("Por favor, selecciona al menos una sucursal.");
                 return;
             }
             string distribuidor = "";
@@ -77,15 +83,17 @@ namespace PharmacyOrders
 
             string direccion = "";
             if (chkPrincipal.Checked && chkSecundaria.Checked)
-                direccion = "Calle de la Rosa n. 28 and the one located at Calle Alcazabilla n. 3";
+                direccion = "Para la farmacia situada en Calle de la Rosa n.28 y para la situada en Calle Alcazabilla n.3";
             else if (chkPrincipal.Checked)
-                direccion = "Calle de la Rosa n. 28";
+                direccion = "Para la farmacia situada en Calle de la Rosa n. 28";
             else if (chkSecundaria.Checked)
-                direccion = "Calle Alcazabilla n. 3";
+                direccion = "Para la farmacia situada en Calle Alcazabilla n. 3";
 
             string medicamento = txtMedicamento.Text.Trim();
             string tipo = cmbTipo.SelectedItem.ToString();
             int cantidad = int.Parse(txtCantidad.Text);
+
+            new Form2(distribuidor, medicamento, tipo, cantidad, direccion).ShowDialog();
         }
     }
 }
